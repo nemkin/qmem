@@ -1,6 +1,40 @@
 ﻿#include "qmem.h"
 
-QRegister::QRegister(string name, int size) {
+std::string to_string(std::vector<int> v) {
+  bool first = true;
+  std::string res = "{";
+  for (int i = 0; i < static_cast<int>(v.size()); i++) {
+    if (!first) {
+      res += ", ";
+    }
+    first = false;
+    res += std::to_string(v[i]);
+  }
+  res += "}";
+  return res;
+}
+
+std::string to_string(std::vector<std::complex<double>> v) {
+  bool first = true;
+  std::string res = "{";
+  for (int i = 0; i < static_cast<int>(v.size()); i++) {
+    if (!first) {
+      res += ", ";
+    }
+    first = false;
+
+    auto real = std::to_string(v[i].real());
+    auto imag = std::to_string(v[i].imag());
+
+    res += real;
+    res += " ";
+    res += imag;
+  }
+  res += "}";
+  return res;
+}
+
+QRegister::QRegister(std::string name, int size) {
   this->name = name;
   numbers.resize(size);
   for (int i = 0; i < size; ++i) {
@@ -16,7 +50,7 @@ void QRegister::Print() {
   std::cout << std::endl;
 }
 
-QOperation::QOperation(string name, int size) {
+QOperation::QOperation(std::string name, int size) {
   this->name = name;
   this->size = size;
   hadamard.resize(size);
@@ -28,17 +62,17 @@ QOperation::QOperation(string name, int size) {
   }
 }
 
-vector<complex<double>> QOperation::Row(int j) {
-  vector<complex<double>> row;
+std::vector<std::complex<double>> QOperation::Row(int j) {
+  std::vector<std::complex<double>> row;
 
   for (int i = 0; i < this->size; ++i) {
     auto selector = i & j;
     auto selectorBitCount = countSetBits(selector);
     bool isNegative = selectorBitCount % 2;
 
-    debug(selector);
-    debug(selectorBitCount);
-    debug(isNegative);
+    std::cout << std::to_string(selector) << std::endl;
+    std::cout << std::to_string(selectorBitCount) << std::endl;
+    std::cout << std::to_string(isNegative) << std::endl;
 
     if (isNegative) {
       row.push_back(-1);
@@ -47,7 +81,7 @@ vector<complex<double>> QOperation::Row(int j) {
     }
   }
 
-  debug(row);
+  std::cout << to_string(row) << std::endl;
   return row;
 }
 
