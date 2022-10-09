@@ -29,7 +29,6 @@ public:
 class QOperation {
 
 private:
-	int size;
 	vector<vector<complex<double>>> hadamard;
 
 public:
@@ -45,10 +44,10 @@ public:
 	}
 
 	QRegister Apply(QRegister target) {
-		QRegister result(size);
+		QRegister result(target.numbers.size());
 
-		for (int i = 0; i < size; ++i) {
-			for (int j = 0; j < size; ++j) {
+		for (int i = 0; i < hadamard.size(); ++i) {
+			for (int j = 0; j < hadamard[i].size(); ++j) {
 				result.numbers[j] += target.numbers[i] * hadamard[i][j];
 			}
 		}
