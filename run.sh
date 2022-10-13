@@ -1,4 +1,8 @@
+#!/bin/bash
+
+set -e
+
 cd build
-cmake ../src
+cmake -g -DCMAKE_BUILD_TYPE=Debug ../src
 make
 ./qmem
