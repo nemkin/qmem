@@ -14,8 +14,7 @@ public:
   static std::string to_string(QReg reg);
   static std::string to_string(QOp* op);
 
-  template <typename T>
-  static std::string join(std::string separator, std::vector<T> vals);
+  static std::string join(std::string separator, std::vector<std::complex<double> > vals);
 
   static void print(std::complex<double> val);
   static void print(QReg reg);

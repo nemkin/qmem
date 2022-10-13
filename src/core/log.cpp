@@ -2,16 +2,17 @@
 
 #include <iostream>
 
-using namespace std;
-
 std::string Log::to_string(std::complex<double> val) {
-  string result;
-  cout << val << endl;
-  auto real = to_string(val.real());
-  auto imag = to_string(val.imag());
-  result += real;
+  std::string result;
+  std::cout << val << std::endl;
+  auto real = val.real();
+  auto imag = val.imag();
+
+  auto real_str = std::to_string(real);
+  auto imag_str = std::to_string(imag);
+  result += real_str;
   result += " ";
-  result += imag;
+  result += imag_str;
   return result;
 }
 
@@ -32,11 +33,10 @@ std::string Log::to_string(QOp *op) {
   return res;
 }
 
-template <typename T>
-std::string Log::join(std::string separator, std::vector<T> vals) {
+std::string Log::join(std::string separator, std::vector<std::complex<double> > vals) {
   std::string result = to_string(vals[0]);
   for (int i = 1; i < vals.size(); ++i) {
-    cout << i << " " << vals.size();
+    std::cout << i << " " << vals.size();
     result += separator;
     result += to_string(vals[i]);
   }
@@ -44,9 +44,9 @@ std::string Log::join(std::string separator, std::vector<T> vals) {
 }
 
 void Log::print(std::complex<double> val) {
-  cout << Log::to_string(val) << endl;
+    std::cout << Log::to_string(val) << std::endl;
 }
 
-void Log::print(QReg reg) { cout << Log::to_string(reg) << endl; }
+void Log::print(QReg reg) { std::cout << Log::to_string(reg) << std::endl; }
 
-void Log::print(QOp *op) { cout << Log::to_string(op) << endl; }
+void Log::print(QOp *op) { std::cout << Log::to_string(op) << std::endl; }
