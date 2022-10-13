@@ -8,9 +8,10 @@ std::string Log::to_string(std::complex<double> val) {
   std::ostringstream ss;
 
   ss << std::fixed << std::setprecision(1);
-  ss << std::setfill('x') << std::setw(3);
+  ss << std::setfill('x') << std::right;
+  ss << std::setiosflags(std::ios::showpos);
 
-  ss << val.real() << " " << val.imag();
+  ss << std::setw(3) << val;
 
   auto result = ss.str();
   return result;
@@ -32,7 +33,7 @@ std::string Log::to_string(QOp* op) {
 
   ss << op->name();
   ss << " = {" << std::endl;
-  for (int i = 1; i < op->size(); ++i) {
+  for (int i = 0; i < op->size(); ++i) {
     ss << to_string(op->row(i)) << std::endl;
   }
   ss << "}" << std::endl;

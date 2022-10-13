@@ -18,7 +18,7 @@ QReg Hadamard::row(int i) {
     auto selector = i & j;
     auto selectorBitCount = this->count_set_bits(selector);
     bool isNegative = selectorBitCount % 2;
-    row.cells[i] = isNegative ? -1 : 1;
+    row.cells[j] = isNegative ? -1 : 1;
   }
 
   return row;
