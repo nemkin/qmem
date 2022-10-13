@@ -7,7 +7,7 @@
 std::string Log::to_string(std::complex<double> val) {
   std::ostringstream ss;
 
-  ss << std::fixed << std::setprecision(1);
+  ss << std::fixed << std::setprecision(3);
   ss << std::setfill('x') << std::right;
   ss << std::setiosflags(std::ios::showpos);
 

@@ -1,5 +1,7 @@
 #include "hadamard.h"
 
+#include <cmath>
+
 Hadamard::Hadamard(std::string name, int size) : QOp(name, size) {}
 
 int Hadamard::count_set_bits(int n) {
@@ -14,11 +16,13 @@ int Hadamard::count_set_bits(int n) {
 QReg Hadamard::row(int i) {
   QReg row(this->name() + "[" + std::to_string(i) + "]", this->size());
 
+  double denominator = std::sqrt(1.0 * this->size());
+
   for (int j = 0; j < this->size(); ++j) {
     auto selector = i & j;
     auto selectorBitCount = this->count_set_bits(selector);
     bool isNegative = selectorBitCount % 2;
-    row.cells[j] = isNegative ? -1 : 1;
+    row.cells[j] = (isNegative ? -1 : 1) / denominator;
   }
 
   return row;
@@ -36,7 +40,7 @@ QReg Hadamard::apply(QReg target) {
   for (int i = 0; i < this->size(); ++i) {
     auto row = this->row(i);
     for (int j = 0; j < row.cells.size(); ++j) {
-      result.cells[j] += target.cells[i] * row.cells[i];
+      result.cells[i] += target.cells[j] * row.cells[j];
     }
   }
 
