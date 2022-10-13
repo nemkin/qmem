@@ -16,6 +16,8 @@ public:
   std::string name();
   int size();
 
-  virtual QReg row(int j) = 0;
-  virtual QReg apply(QReg target) = 0;
+  virtual QReg row(int i) = 0;
+  virtual QReg col(int j) = 0;
+
+  virtual QReg apply(QReg target);
 };
