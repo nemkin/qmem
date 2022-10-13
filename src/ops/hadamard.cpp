@@ -27,7 +27,7 @@ QReg Hadamard::row(int i) {
 QReg Hadamard::apply(QReg target) {
   if (this->_size != target.cells.size()) {
     throw std::invalid_argument(
-        "Operation and target register sizes don't match!");
+      "Operation and target register sizes don't match!");
   }
 
   auto result_name = target.name() + " * " + this->name();
