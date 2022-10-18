@@ -20,9 +20,9 @@ std::string Log::to_string(std::complex<double> val) {
 std::string Log::to_string(QReg reg) {
   std::ostringstream ss;
 
-  ss << reg.name() << " = { ";
+  ss << reg.name() << " = " << std::endl << "{ ";
   ss << Log::join(", ", reg.cells);
-  ss << "}";
+  ss << "}" << std::endl;
 
   auto result = ss.str();
   return result;
@@ -34,7 +34,7 @@ std::string Log::to_string(QOp* op) {
   ss << op->name();
   ss << " = {" << std::endl;
   for (int i = 0; i < op->size(); ++i) {
-    ss << to_string(op->row(i)) << std::endl;
+    ss << Log::join(", ", op->row(i).cells) << std::endl;
   }
   ss << "}" << std::endl;
 
