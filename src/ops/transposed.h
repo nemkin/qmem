@@ -4,10 +4,10 @@
 
 class Transposed : public QOp {
 private:
-  QOp _inner;
+  QOp* _inner;
 
 public:
-  Transposed(QOp other);
+  Transposed(QOp* other);
 
   virtual QReg row(int i);
   virtual QReg col(int j);
