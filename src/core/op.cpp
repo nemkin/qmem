@@ -109,6 +109,14 @@ void QOp::apply(QRegisters& target, const std::vector<int>& target_regs) {
   auto bit_mask_mapping = get_bit_mask_mapping(target, target_regs);
   auto qubit_mapping = get_qubit_mapping(bit_mask_mapping);
   
+  Amplitudes reordered(target.amplitudes.size());
+
+  for (int i = 0; i < reordered.size(); ++i) {
+    reordered[qubit_mapping[i]] = target.amplitudes[i];
+  }
+  
+  Log::print(target.amplitudes);
+  Log::print(reordered);
   
   //for (int i = 0; i < this->size(); ++i) {
   //  auto row = this->row(i);
