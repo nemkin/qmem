@@ -9,6 +9,6 @@ private:
 public:
   Transposed(QOp* other);
 
-  virtual QReg row(int i);
-  virtual QReg col(int j);
+  virtual Amplitudes row(int i);
+  virtual Amplitudes col(int j);
 };

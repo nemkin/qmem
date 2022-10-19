@@ -2,15 +2,22 @@
 
 #include <complex>
 #include <vector>
+#include <map>
 
-class QReg {
+#include "base.h"
 
-private:
-  std::string _name;
+class QRegisters {
 
 public:
-  std::vector<std::complex<double>> cells;
+  int total_qubits = 0;
+  int total_size = 0;
+  int total_registers = 0;
+  std::vector<int> qubits;
+  std::vector<int> sizes;
+  std::vector<std::string> names;
 
-  QReg(std::string name, int size);
-  std::string name();
+  Amplitudes amplitudes;
+
+  QRegisters();
+  void Add(std::string name, int qubits);
 };

@@ -2,13 +2,14 @@
 
 #include <cmath>
 
-Transposed::Transposed(QOp* other) : QOp(other->name()+"_T", other->size()) {
+Transposed::Transposed(QOp* other) : QOp(other->name()+"_T", other->qubits()) {
+  _inner = other;
 }
 
-QReg Transposed::row(int i) {
+Amplitudes Transposed::row(int i) {
   return _inner->col(i);
 }
 
-QReg Transposed::col(int i) {
+Amplitudes Transposed::col(int i) {
   return _inner->row(i);
 }

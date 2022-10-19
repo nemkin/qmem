@@ -7,24 +7,15 @@
 #include "ops/transposed.h"
 
 int main() {
-  int size = 1 << 3;
-  auto reg = QReg("r", size);
-  auto h = Grover("H", size);
-  auto g = Grover("G", size);
-  auto g_t = Transposed(&g);
+  auto regs = QRegisters();
 
-  reg.cells[2] = 1.0;
+  regs.Add("r1", 1);
+  regs.Add("r2", 3);
+  regs.Add("r3", 2);
 
-  Log::print(&g);
-  Log::print(reg);
-  for (int i = 0; i < 10; ++i) {
-    reg = g.apply(reg);
-    Log::print(reg);
-  }
+  auto op = Hadamard("H", 3);
 
-  for (int i = 0; i < size; ++i) {
-    auto res = g.apply(g_t.row(i));
-    Log::print(res);
-  }
+  op.apply(regs, { 0, 2 });
+
   return 0;
 }

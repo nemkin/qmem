@@ -9,7 +9,8 @@ set(SOURCES
   "core/log.cpp"
   "ops/hadamard.cpp"
   "ops/grover.cpp"
+  "ops/transposed.cpp"
 )
 
-add_executable (qmem ${SOURCES} "ops/transposed.cpp")
+add_executable (qmem ${SOURCES})
 set_property(TARGET qmem PROPERTY CXX_STANDARD 20)

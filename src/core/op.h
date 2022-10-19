@@ -5,19 +5,23 @@
 #include <complex>
 #include <vector>
 
+#include "base.h"
+
 class QOp {
+private:
+  int _qubits;
 
 protected:
   std::string _name;
-  int _size;
 
 public:
-  QOp(std::string name, int size);
+  QOp(std::string name, int qubits);
   std::string name();
+  int qubits();
   int size();
 
-  virtual QReg row(int i) = 0;
-  virtual QReg col(int j) = 0;
+  virtual Amplitudes row(int i) = 0;
+  virtual Amplitudes col(int j) = 0;
 
-  virtual QReg apply(QReg target);
+  virtual void apply(QRegisters& target, const std::vector<int>& target_regs);
 };

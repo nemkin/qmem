@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <sstream>
 
+
 std::string Log::to_string(std::complex<double> val) {
   std::ostringstream ss;
 
@@ -17,11 +18,36 @@ std::string Log::to_string(std::complex<double> val) {
   return result;
 }
 
-std::string Log::to_string(QReg reg) {
+
+std::string Log::to_string(std::vector<int> vals) {
   std::ostringstream ss;
 
-  ss << reg.name() << " = " << std::endl << "{ ";
-  ss << Log::join(", ", reg.cells);
+  ss << "{ ";
+  ss << Log::join(", ", vals);
+  ss << "}" << std::endl;
+
+  auto result = ss.str();
+  return result;
+}
+
+
+std::string Log::to_string(std::vector<bool> vals) {
+  std::ostringstream ss;
+
+  ss << "{ ";
+  ss << Log::join(", ", vals);
+  ss << "}" << std::endl;
+
+  auto result = ss.str();
+  return result;
+}
+
+
+std::string Log::to_string(std::vector<std::complex<double>> vals) {
+  std::ostringstream ss;
+
+  ss << "{ ";
+  ss << Log::join(", ", vals);
   ss << "}" << std::endl;
 
   auto result = ss.str();
@@ -34,7 +60,7 @@ std::string Log::to_string(QOp* op) {
   ss << op->name();
   ss << " = {" << std::endl;
   for (int i = 0; i < op->size(); ++i) {
-    ss << Log::join(", ", op->row(i).cells) << std::endl;
+    ss << Log::join(", ", op->row(i)) << std::endl;
   }
   ss << "}" << std::endl;
 
@@ -42,7 +68,35 @@ std::string Log::to_string(QOp* op) {
   return result;
 }
 
-std::string Log::join(std::string separator, std::vector<std::complex<double> > vals) {
+std::string Log::join(std::string separator, std::vector<int> vals) {
+  std::ostringstream ss;
+
+  for (int i = 0; i < vals.size(); ++i) {
+    ss << vals[i];
+    if (i != vals.size() - 1) {
+      ss << separator;
+    }
+  }
+
+  auto result = ss.str();
+  return result;
+}
+
+std::string Log::join(std::string separator, std::vector<bool> vals) {
+  std::ostringstream ss;
+
+  for (int i = 0; i < vals.size(); ++i) {
+    ss << vals[i];
+    if (i != vals.size() - 1) {
+      ss << separator;
+    }
+  }
+
+  auto result = ss.str();
+  return result;
+}
+
+std::string Log::join(std::string separator, std::vector<std::complex<double>> vals) {
   std::ostringstream ss;
 
   for (int i = 0; i < vals.size(); ++i) {
@@ -60,8 +114,16 @@ void Log::print(std::complex<double> val) {
   std::cout << Log::to_string(val) << std::endl;
 }
 
-void Log::print(QReg reg) {
-  std::cout << Log::to_string(reg) << std::endl;
+void Log::print(std::vector<int> vals) {
+  std::cout << Log::to_string(vals) << std::endl;
+}
+
+void Log::print(std::vector<bool> vals) {
+  std::cout << Log::to_string(vals) << std::endl;
+}
+
+void Log::print(std::vector<std::complex<double>> vals) {
+  std::cout << Log::to_string(vals) << std::endl;
 }
 
 void Log::print(QOp* op) {

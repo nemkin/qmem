@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-Hadamard::Hadamard(std::string name, int size) : QOp(name, size) {}
+Hadamard::Hadamard(std::string name, int qubits) : QOp(name, qubits) {}
 
 int Hadamard::count_set_bits(int n) {
   int count = 0;
@@ -13,8 +13,8 @@ int Hadamard::count_set_bits(int n) {
   return count;
 }
 
-QReg Hadamard::row(int i) {
-  QReg row(this->name() + "[" + std::to_string(i) + "]", this->size());
+Amplitudes Hadamard::row(int i) {
+  Amplitudes row(this->size());
 
   double denominator = std::sqrt(1.0 * this->size());
 
@@ -22,12 +22,12 @@ QReg Hadamard::row(int i) {
     auto selector = i & j;
     auto selectorBitCount = this->count_set_bits(selector);
     bool isNegative = selectorBitCount % 2;
-    row.cells[j] = (isNegative ? -1 : 1) / denominator;
+    row[j] = (isNegative ? -1 : 1) / denominator;
   }
 
   return row;
 }
 
-QReg Hadamard::col(int i) {
+Amplitudes Hadamard::col(int i) {
   return row(i);
 }

@@ -4,8 +4,8 @@
 
 class Grover : public QOp {
 public:
-  Grover(std::string name, int size);
+  Grover(std::string name, int qubits);
 
-  virtual QReg row(int i);
-  virtual QReg col(int j);
+  virtual Amplitudes row(int i);
+  virtual Amplitudes col(int j);
 };

@@ -2,24 +2,24 @@
 
 #include <cmath>
 
-Grover::Grover(std::string name, int size) : QOp(name, size) {
+Grover::Grover(std::string name, int qubits) : QOp(name, qubits) {
 }
 
-QReg Grover::row(int i) {
-  QReg row(this->name() + "[" + std::to_string(i) + "]", this->size());
+Amplitudes Grover::row(int i) {
+  Amplitudes row(this->size());
 
   double denominator = this->size();
 
   for (int j = 0; j < this->size(); ++j) {
-    row.cells[j] = 2 / denominator;
+    row[j] = 2 / denominator;
     if (i == j) {
-      row.cells[j] -= 1;
+      row[j] -= 1;
     }
   }
 
   return row;
 }
 
-QReg Grover::col(int i) {
+Amplitudes Grover::col(int i) {
   return row(i);
 }

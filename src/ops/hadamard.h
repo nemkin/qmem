@@ -7,8 +7,8 @@ private:
   int count_set_bits(int n);
 
 public:
-  Hadamard(std::string name, int size);
+  Hadamard(std::string name, int qubits);
 
-  virtual QReg row(int i);
-  virtual QReg col(int j);
+  virtual Amplitudes row(int i);
+  virtual Amplitudes col(int j);
 };
