@@ -1,6 +1,7 @@
 #include "op.h"
 
-#include<iostream>
+#include <iostream>
+#include <bitset>
 
 #include "log.h"
 
@@ -15,9 +16,8 @@ int QOp::qubits() { return this->_qubits; }
 
 int QOp::size() { return 1 << this->_qubits; }
 
-void QOp::apply(QRegisters& target, const std::vector<int>& target_regs) {
-  std::vector<int> bit_mask_map(target.total_qubits);
-  std::vector<int> qubit_mapping(target.total_size);
+std::vector<int> QOp::get_bit_mask_mapping(const QRegisters& target, const std::vector<int>& target_regs) {
+  std::vector<int> bit_mask_mapping(target.total_qubits);
 
   int total_qubits = target.total_qubits;
   int affected_qubits = 0;
@@ -28,6 +28,11 @@ void QOp::apply(QRegisters& target, const std::vector<int>& target_regs) {
   std::cout << "affected_qubits: " << affected_qubits << std::endl;
   std::cout << "target.total_size: " << target.total_size << std::endl;
   std::cout << "target.total_registers: " << target.total_registers << std::endl;
+
+  if (this->qubits() != affected_qubits) {
+    throw std::invalid_argument(
+      "Operation and target register sizes don't match!");
+  }
 
   std::vector<bool> is_target_reg(target.total_registers);
   Log::print(is_target_reg);
@@ -43,7 +48,7 @@ void QOp::apply(QRegisters& target, const std::vector<int>& target_regs) {
 
   int current_bit = target.total_qubits - 1;
   int current_begin_bit = target.total_qubits - 1;
-  int current_end_bit = affected_qubits-1;
+  int current_end_bit = affected_qubits - 1;
   for (int i = 0; i < target.total_registers; ++i) {
     for (int current_offset = 0; current_offset < target.qubits[i]; ++current_offset) {
       std::cout << "curr_bit: " << current_bit << " "
@@ -54,41 +59,57 @@ void QOp::apply(QRegisters& target, const std::vector<int>& target_regs) {
         << "current_offset: " << current_offset << " "
         << std::endl;
       if (is_target_reg[i]) {
-        bit_mask_map[current_bit] = current_end_bit--;
+        bit_mask_mapping[current_bit] = current_end_bit--;
       }
       else {
-        bit_mask_map[current_bit] = current_begin_bit--;
+        bit_mask_mapping[current_bit] = current_begin_bit--;
       }
 
       --current_bit;
     }
   }
 
-  Log::print(bit_mask_map);
+  Log::print(bit_mask_mapping);
 
-  //int n = target.sizes.size();
+  return bit_mask_mapping;
+}
 
-  //int offset = 1;
-  //std::vector<int> offsets(n+1);
-  //offsets[n] = 0;
-  //for (int i = n-1; 0<=i; --i) {
-  //  offset *= target.sizes[i];
-  //  offsets[i] = offset;
-  //}
+std::vector<int> QOp::get_qubit_mapping(std::vector<int> bit_mask_mapping) {
+  int n = 1 << bit_mask_mapping.size();
+  std::vector<int> qubit_mapping(n);
 
+  for (int i = 0; i < qubit_mapping.size(); ++i) {
+    int mapped = 0;
 
-  //int affected_size = 1;
-  //for (int i = 0; i<target_regs.size(); ++i) {
-  //  affected_size *= target.sizes[target_regs[i]];
-  //}
+    for (int j = 0; j < bit_mask_mapping.size(); ++j) {
+      int frombit = 1 << j;
+      int tobit = 1 << bit_mask_mapping[j];
 
-  //if (this->size() != affected_size) {
-  //  throw std::invalid_argument(
-  //    "Operation and target register sizes don't match!");
-  //}
+      if (i & frombit) {
+        mapped += tobit;
+      }
+    }
 
-  //Log::print(offsets);
+    qubit_mapping[i] = mapped;
 
+    std::cout
+      << std::bitset<10>(i) << " = " << i
+      << " -> " << std::endl
+      << std::bitset<10>(mapped) << " = " << mapped
+      << std::endl << std::endl;
+  }
+
+  Log::print(qubit_mapping);
+
+  return qubit_mapping;
+}
+
+void QOp::apply(QRegisters& target, const std::vector<int>& target_regs) {
+  
+  auto bit_mask_mapping = get_bit_mask_mapping(target, target_regs);
+  auto qubit_mapping = get_qubit_mapping(bit_mask_mapping);
+  
+  
   //for (int i = 0; i < this->size(); ++i) {
   //  auto row = this->row(i);
   //  for (int j = 0; j < row.cells.size(); ++j) {

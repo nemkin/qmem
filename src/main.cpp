@@ -9,13 +9,14 @@
 int main() {
   auto regs = QRegisters();
 
+  regs.Add("r0", 1);
   regs.Add("r1", 1);
-  regs.Add("r2", 3);
-  regs.Add("r3", 2);
+  regs.Add("r2", 1);
+  regs.Add("r3", 1);
 
-  auto op = Hadamard("H", 3);
+  auto op = Hadamard("H", 2);
 
-  op.apply(regs, { 0, 2 });
+  op.apply(regs, { 0, 3 });
 
   return 0;
 }
