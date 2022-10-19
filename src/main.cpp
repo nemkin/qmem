@@ -14,9 +14,12 @@ int main() {
   regs.Add("r2", 1);
   regs.Add("r3", 1);
 
-  auto op = Hadamard("H", 2);
+  auto op = Hadamard("H", 1);
 
-  op.apply(regs, { 0, 3 });
+  op.apply(regs, { 0 });
+  op.apply(regs, { 1 });
+  op.apply(regs, { 2 });
+  op.apply(regs, { 3 });
 
   return 0;
 }
