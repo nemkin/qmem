@@ -9,6 +9,7 @@ set(SOURCES
   "core/log.cpp"
   "ops/hadamard.cpp"
   "ops/grover.cpp"
+  "ops/sum.cpp"
   "ops/transposed.cpp"
 )
 
