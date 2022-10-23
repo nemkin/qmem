@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <bitset>
 
 
 std::string Log::to_string(std::complex<double> val) {
@@ -41,7 +42,6 @@ std::string Log::to_string(std::vector<bool> vals) {
   auto result = ss.str();
   return result;
 }
-
 
 std::string Log::to_string(std::vector<std::complex<double>> vals) {
   std::ostringstream ss;
@@ -124,6 +124,14 @@ void Log::print(std::vector<bool> vals) {
 
 void Log::print(std::vector<std::complex<double>> vals) {
   std::cout << Log::to_string(vals) << std::endl;
+}
+
+void Log::qubit_print(std::vector<std::complex<double>> vals, int max_size) {
+  for (int i = 0; i < vals.size(); ++i) {
+    auto bits = std::bitset<8 * sizeof(i)>(i).to_string();
+    std::cout << "|" << bits.substr(bits.size() - max_size) << ">: " << Log::to_string(vals[i]) << std::endl;
+  }
+  std::cout << std::endl;
 }
 
 void Log::print(QOp* op) {

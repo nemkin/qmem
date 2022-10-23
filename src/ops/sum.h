@@ -16,4 +16,7 @@ public:
 
   virtual Amplitudes row(int i);
   virtual Amplitudes col(int j);
+
+  virtual void apply(QRegisters& target, const std::vector<int>& target_regs);
+  virtual void apply(QRegisters& target, const std::vector<int>& input_regs, const std::vector<int>& output_regs);
 };

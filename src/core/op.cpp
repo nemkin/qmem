@@ -16,6 +16,15 @@ int QOp::qubits() { return this->_qubits; }
 
 int QOp::size() { return 1 << this->_qubits; }
 
+int QOp::count_set_bits(int n) {
+  int count = 0;
+  while (n) {
+    count += n & 1;
+    n >>= 1;
+  }
+  return count;
+}
+
 std::vector<int> QOp::get_bit_mask_mapping(const QRegisters& target, const std::vector<int>& target_regs) {
   std::vector<int> bit_mask_mapping(target.total_qubits);
 

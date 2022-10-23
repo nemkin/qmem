@@ -13,6 +13,7 @@ private:
 
 protected:
   std::string _name;
+  int count_set_bits(int n);
 
 public:
   QOp(std::string name, int qubits);

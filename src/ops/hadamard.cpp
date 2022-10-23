@@ -4,15 +4,6 @@
 
 Hadamard::Hadamard(std::string name, int qubits) : QOp(name, qubits) {}
 
-int Hadamard::count_set_bits(int n) {
-  int count = 0;
-  while (n) {
-    count += n & 1;
-    n >>= 1;
-  }
-  return count;
-}
-
 Amplitudes Hadamard::row(int i) {
   Amplitudes row(this->size());
 

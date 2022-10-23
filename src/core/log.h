@@ -25,4 +25,6 @@ public:
   static void print(std::vector<bool> vals);
   static void print(std::vector<std::complex<double>> vals);
   static void print(QOp* op);
+
+  static void qubit_print(std::vector<std::complex<double>> vals, int max_size);
 };
