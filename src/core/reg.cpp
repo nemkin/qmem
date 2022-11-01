@@ -9,7 +9,7 @@ QRegisters::QRegisters() {
 
 }
 
-void QRegisters::Add(std::string name, int qubits) {
+void QRegisters::Add(std::string name, int qubits, int initial) {
   auto size = 1 << qubits;
 
   auto new_size = this->amplitudes.size();
@@ -19,14 +19,14 @@ void QRegisters::Add(std::string name, int qubits) {
   std::vector<std::complex<double>> new_amplitudes(new_size);
 
   for (int j = 0; j < this->amplitudes.size(); ++j) {
-    auto i = 0;
-    new_amplitudes[i * this->total_size + j] = amplitudes[j];
+    new_amplitudes[initial * this->total_size + j] = amplitudes[j];
   }
 
   if (this->total_registers == 0) {
     new_amplitudes[0] = 1;
   }
 
+  this->amplitudes.clear();
   this->amplitudes = new_amplitudes;
   this->total_registers += 1;
   this->total_qubits += qubits;

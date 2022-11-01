@@ -19,5 +19,5 @@ public:
   Amplitudes amplitudes;
 
   QRegisters();
-  void Add(std::string name, int qubits);
+  void Add(std::string name, int qubits, int initial = 0);
 };

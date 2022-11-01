@@ -1,5 +1,6 @@
 #include "sum.h"
 
+#include <iostream>
 #include <cmath>
 #include <cassert>
 
@@ -37,13 +38,13 @@ Amplitudes Sum::col(int i) {
 
 
 void Sum::apply(QRegisters& target, const std::vector<int>& input_regs, const std::vector<int>& output_regs) {
-  int input_reg_size = 0;
+  int input_reg_size = 1;
   for (int i = 0; i < input_regs.size(); ++i) {
-    input_reg_size += target.sizes[i];
+    input_reg_size *= target.sizes[input_regs[i]];
   }
-  int output_reg_size = 0;
+  int output_reg_size = 1;
   for (int i = 0; i < output_regs.size(); ++i) {
-    output_reg_size += target.sizes[i];
+    output_reg_size *= target.sizes[output_regs[i]];
   }
 
   assert(input_reg_size == this->input_size);
