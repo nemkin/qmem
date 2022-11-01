@@ -13,16 +13,16 @@
 int main() {
   auto regs = QRegisters();
 
-  int size = 4;
-  int sum_size = 3;
+  int sum_size = 4;
+  int size = 1 << sum_size;
 
-  auto sum = Sum("SUM", size, sum_size);
+  auto op = Hadamard("OP", size); //, sum_size);
 
   regs.Add("input", size); // 0
-  regs.Add("output", sum_size); // 1
+//  regs.Add("output", sum_size); // 1
 
-  for (int i = 0; i < 100; ++i) {
-    sum.apply(regs, { 0 }, { 1 });
+  for (int i = 0; i < 10; ++i) {
+    op.apply(regs, { 0 }); //, 1 });
   }
 
   return 0;
