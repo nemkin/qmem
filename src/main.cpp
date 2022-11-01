@@ -14,7 +14,9 @@ int main() {
   auto regs = QRegisters();
 
   int sum_size = 3;
-  int size = 4;
+  int size = 1 << (sum_size-1);
+  std::cout<<"sum_size: "<<sum_size<<std::endl;
+  std::cout<<"size: "<<size<<std::endl;
 
   auto op = Sum("OP", size, sum_size);
 
