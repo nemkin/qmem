@@ -10,6 +10,7 @@ set(SOURCES
   "ops/hadamard.cpp"
   "ops/grover.cpp"
   "ops/sum.cpp"
+  "ops/mcnot.cpp"
   "ops/transposed.cpp"
 )
 
