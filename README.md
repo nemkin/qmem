@@ -2,7 +2,7 @@
 
 This code is accompanying my research project report submission to the Scientific Students' Association Conference.
 
-The report (in English) can be found at https://github.com/nemkin/tdk-2022/.
+The report (in English) can be found at [tdk-2022](https://github.com/nemkin/tdk-2022/).
 
 [PDF](https://github.com/nemkin/tdk-2022/blob/main/tdk_dolgozatbeadas_szoftver_nemkin_viktoria_memoriaoptimalizalas.pdf)
 
