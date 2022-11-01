@@ -21,7 +21,7 @@ int main() {
   auto sum = Sum("SUM", size, sum_size);
 
   regs.Add("oracle", oracle_size, 1); // 0
-  regs.Add("cells", size); // 1
+  regs.Add("cells", size, 6); // 1
   regs.Add("sums", sum_size); // 2
 
   h.apply(regs, { 0 });

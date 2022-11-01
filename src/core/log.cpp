@@ -128,8 +128,13 @@ void Log::print(std::vector<std::complex<double>> vals) {
 
 void Log::qubit_print(std::vector<std::complex<double>> vals, int max_size) {
   for (int i = 0; i < vals.size(); ++i) {
+    if (vals[i] == 0.0) {
+      continue;
+    }
     auto bits = std::bitset<8 * sizeof(i)>(i).to_string();
-    std::cout << "|" << bits.substr(bits.size() - max_size) << ">: " << Log::to_string(vals[i]) << std::endl;
+    auto remaining = bits.substr(bits.size() - max_size);
+    reverse(remaining.begin(), remaining.end());
+    std::cout << "|" << remaining << ">: " << Log::to_string(vals[i]) << std::endl;
   }
   std::cout << std::endl;
 }

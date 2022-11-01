@@ -149,8 +149,9 @@ void QOp::apply(QRegisters& target, const std::vector<int>& target_regs) {
   for (int i = 0; i < all_size; ++i) {
     result[i] = result_reordered[qubit_mapping[i]];
   }
-  Log::print(result);
+
+  std::cout << "Apply " << this->name() << std::endl;
+  Log::qubit_print(result, target.total_qubits);
 
   target.amplitudes = result;
-
 }

@@ -69,7 +69,7 @@ void Sum::apply(QRegisters& target, const std::vector<int>& input_regs, const st
 
 void Sum::apply(QRegisters& target, const std::vector<int>& target_regs) {
 
-  Log::qubit_print(target.amplitudes, this->qubits());
+  // Target regs are: input, then output
 
   auto bit_mask_mapping = get_bit_mask_mapping(target, target_regs);
   auto qubit_mapping = get_qubit_mapping(bit_mask_mapping);
@@ -86,29 +86,39 @@ void Sum::apply(QRegisters& target, const std::vector<int>& target_regs) {
   for (int i = 0; i < reordered.size(); ++i) {
     reordered[qubit_mapping[i]] = target.amplitudes[i];
   }
-  /*
-  Log::print(target.amplitudes);
-  Log::print(reordered);*/
+
+  std::cout << "Initial of " << this->name() << std::endl;
+  Log::qubit_print(target.amplitudes, target.total_qubits);
+
+  std::cout << "Reordered initial of " << this->name() << std::endl;
+  Log::qubit_print(reordered, target.total_qubits);
 
   Amplitudes result_reordered(all_size);
   
   for (int upper = 0; upper < upper_size; ++upper) {
     for (int j = 0; j < input_size; ++j) {
       int count = this->count_set_bits(j);
-      result_reordered[upper * affected_size + j] = reordered[upper * affected_size + j];
+      if (reordered[upper * affected_size + j] != 0.0) {
+        std::cout << count << " ";
+      }
+      //result_reordered[upper * affected_size + j] = reordered[upper * affected_size + j];
         
-      result_reordered[upper * affected_size + input_size + count] += reordered[upper * affected_size + j];
+      result_reordered[upper * affected_size + count * input_size + j] += reordered[upper * affected_size + j];
     }
   }
- 
-  //Log::print(result_reordered);
+
+  std::cout << std::endl;
+
+  std::cout << "Reordered result of " << this->name() << std::endl;
+  Log::qubit_print(result_reordered, target.total_qubits);
 
   Amplitudes result(all_size);
   for (int i = 0; i < all_size; ++i) {
     result[i] = result_reordered[qubit_mapping[i]];
   }
 
-  Log::qubit_print(result, this->qubits());
+  std::cout << "Apply " << this->name() << std::endl;
+  Log::qubit_print(result, target.total_qubits);
 
   target.amplitudes = result;
 }
