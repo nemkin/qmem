@@ -87,11 +87,11 @@ void Sum::apply(QRegisters& target, const std::vector<int>& target_regs) {
     reordered[qubit_mapping[i]] = target.amplitudes[i];
   }
 
-  std::cout << "Initial of " << this->name() << std::endl;
-  Log::qubit_print(target.amplitudes, target.total_qubits);
+  //std::cout << "Initial of " << this->name() << std::endl;
+  //Log::qubit_print(target.amplitudes, target.total_qubits);
 
-  std::cout << "Reordered initial of " << this->name() << std::endl;
-  Log::qubit_print(reordered, target.total_qubits);
+  //std::cout << "Reordered initial of " << this->name() << std::endl;
+  //Log::qubit_print(reordered, target.total_qubits);
 
   Amplitudes result_reordered(all_size);
   
@@ -107,18 +107,18 @@ void Sum::apply(QRegisters& target, const std::vector<int>& target_regs) {
     }
   }
 
-  std::cout << std::endl;
+  //std::cout << std::endl;
 
-  std::cout << "Reordered result of " << this->name() << std::endl;
-  Log::qubit_print(result_reordered, target.total_qubits);
+  //std::cout << "Reordered result of " << this->name() << std::endl;
+  //Log::qubit_print(result_reordered, target.total_qubits);
 
   Amplitudes result(all_size);
   for (int i = 0; i < all_size; ++i) {
     result[i] = result_reordered[qubit_mapping[i]];
   }
 
-  std::cout << "Apply " << this->name() << std::endl;
-  Log::qubit_print(result, target.total_qubits);
+  //std::cout << "Apply " << this->name() << std::endl;
+  //Log::qubit_print(result, target.total_qubits);
 
   target.amplitudes = result;
 }

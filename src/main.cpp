@@ -13,19 +13,17 @@
 int main() {
   auto regs = QRegisters();
 
-  int oracle_size = 1;
   int size = 4;
   int sum_size = 3;
 
-  auto h = Hadamard("H", oracle_size);
   auto sum = Sum("SUM", size, sum_size);
 
-  regs.Add("oracle", oracle_size, 1); // 0
-  regs.Add("cells", size, 6); // 1
-  regs.Add("sums", sum_size); // 2
+  regs.Add("input", size); // 0
+  regs.Add("output", sum_size); // 1
 
-  h.apply(regs, { 0 });
-  sum.apply(regs, { 1 }, { 2 });
+  for (int i = 0; i < 100; ++i) {
+    sum.apply(regs, { 0 }, { 1 });
+  }
 
   return 0;
 }
