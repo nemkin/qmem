@@ -4,7 +4,7 @@
 #include <iomanip>
 #include <sstream>
 #include <bitset>
-
+#include <algorithm>
 
 std::string Log::to_string(std::complex<double> val) {
   std::ostringstream ss;
