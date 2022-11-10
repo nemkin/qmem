@@ -31,7 +31,7 @@ Amplitudes Mcnot::col(index i) {
   col[i] = 1.0;
 
   //TODO Ancilla bits.
-  for (int j = input_size; j < input_size + output_size; ++j) {
+  for (index j = input_size; j < input_size + output_size; ++j) {
     col[j] = 1.0;
   }
 
@@ -44,7 +44,7 @@ void Mcnot::apply(QRegisters& target, const std::vector<index>& input_regs,
   for (index i = 0; i < input_regs.size(); ++i) {
     input_reg_size *= target.sizes[input_regs[i]];
   }
-  int output_reg_size = target.sizes[output_reg];
+  index output_reg_size = target.sizes[output_reg];
 
   assert(output_reg_size == 1);
   assert(input_reg_size == this->input_size);
@@ -96,13 +96,33 @@ void Mcnot::apply(QRegisters& target, const std::vector<index>& target_regs) {
   std::cout << "Reordered initial of " << this->name() << std::endl;
   Log::qubit_print(reordered, target.total_qubits);
 
+  Amplitudes reordered_cleaned;
+  reordered_cleaned.resize(all_size);
+  
+  for(auto amp: reordered) {
+    index i = amp.first;
+    index upper = i / (affected_size);
+    index output_index = (i % (affected_size)) / input_size;
+    index input_index = i % input_size;
+    index target = upper * affected_size + input_index;
+    // std::cout << "i: " << i << std::endl;
+    // std::cout << "upper: " << upper << std::endl;
+    // std::cout << "output_index: " << output_index << std::endl;
+    // std::cout << "input_index: " << input_index << std::endl;
+    // std::cout << "target: " << target << std::endl;
+    reordered_cleaned[target] = amp.second;
+  }
+
+  std::cout << "Reordered cleaned initial of " << this->name() << std::endl;
+  Log::qubit_print(reordered_cleaned, target.total_qubits);
+
   Amplitudes result_reordered;
   result_reordered.resize(all_size);
 
   for (index upper = 0; upper < upper_size; ++upper) {
     for (index j = 0; j < input_size; ++j) {
-      auto curr = reordered.find(upper * affected_size + j);
-      if(curr == reordered.end()) {
+      auto curr = reordered_cleaned.find(upper * affected_size + j);
+      if(curr == reordered_cleaned.end()) {
         continue;
       }
       index count = this->count_set_bits(j);

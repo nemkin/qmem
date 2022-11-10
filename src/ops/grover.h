@@ -4,8 +4,8 @@
 
 class Grover : public QOp {
 public:
-  Grover(std::string name, int qubits);
+  Grover(std::string name, index qubits);
 
-  virtual Amplitudes row(int i);
-  virtual Amplitudes col(int j);
+  virtual Amplitudes row(index i);
+  virtual Amplitudes col(index j);
 };

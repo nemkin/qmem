@@ -70,7 +70,7 @@ std::string Log::to_string(QOp* op) {
 
   ss << op->name();
   ss << " = {" << std::endl;
-  for (int i = 0; i < op->size(); ++i) {
+  for (index i = 0; i < op->size(); ++i) {
     ss << Log::join(", ", op->row(i)) << std::endl;
   }
   ss << "}" << std::endl;
@@ -82,7 +82,7 @@ std::string Log::to_string(QOp* op) {
 std::string Log::join(std::string separator, std::vector<index> vals) {
   std::ostringstream ss;
 
-  for (int i = 0; i < vals.size(); ++i) {
+  for (index i = 0; i < vals.size(); ++i) {
     ss << vals[i];
     if (i != vals.size() - 1) {
       ss << separator;
@@ -96,7 +96,7 @@ std::string Log::join(std::string separator, std::vector<index> vals) {
 std::string Log::join(std::string separator, std::vector<bool> vals) {
   std::ostringstream ss;
 
-  for (int i = 0; i < vals.size(); ++i) {
+  for (index i = 0; i < vals.size(); ++i) {
     ss << vals[i];
     if (i != vals.size() - 1) {
       ss << separator;
@@ -139,7 +139,6 @@ void Log::print(Amplitudes vals) {
 }
 
 void Log::qubit_print(Amplitudes vals, index max_size) {
-  std::cout << "qubits BEGIN ==== " << std::endl;
   for (auto amp : vals) {
     index i = amp.first;
     if (vals[i] == 0.0) { //TODO delete?
@@ -150,7 +149,7 @@ void Log::qubit_print(Amplitudes vals, index max_size) {
     reverse(remaining.begin(), remaining.end());
     std::cout << "|" << remaining << ">: " << Log::to_string(vals[i]) << std::endl;
   }
-  std::cout << "qubits END ==== " << std::endl;
+  std::cout << std::endl;
 }
 
 void Log::print(QOp* op) {

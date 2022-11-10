@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
   std::cout<<"regs.size: "<<regs.amplitudes.size()<<std::endl;
 
   Log::qubit_print(regs.amplitudes, sum_size+size);
-  for (int i = 0; i < 10; ++i) {
+  for (index i = 0; i < 3; ++i) {
     op.apply(regs, { 0, 1 });
     Log::qubit_print(regs.amplitudes, sum_size+size);
   }

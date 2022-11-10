@@ -2,16 +2,16 @@
 
 #include <cmath>
 
-Grover::Grover(std::string name, int qubits) : QOp(name, qubits) {
+Grover::Grover(std::string name, index qubits) : QOp(name, qubits) {
 }
 
-Amplitudes Grover::row(int i) {
+Amplitudes Grover::row(index i) {
   Amplitudes row;
   row.resize(this->size());
 
   double denominator = this->size();
 
-  for (int j = 0; j < this->size(); ++j) {
+  for (index j = 0; j < this->size(); ++j) {
     row[j] = 2 / denominator;
     if (i == j) {
       row[j] -= 1;
@@ -21,6 +21,6 @@ Amplitudes Grover::row(int i) {
   return row;
 }
 
-Amplitudes Grover::col(int i) {
+Amplitudes Grover::col(index i) {
   return row(i);
 }

@@ -18,7 +18,7 @@ index QOp::qubits() { return this->_qubits; }
 index QOp::size() { return 1 << this->_qubits; }
 
 index QOp::count_set_bits(index n) {
-  int count = 0;
+  index count = 0;
   while (n) {
     count += n & 1;
     n >>= 1;
@@ -156,7 +156,7 @@ void QOp::apply(QRegisters& target, const std::vector<index>& target_regs) {
   Amplitudes result;
   result.resize(all_size);
   
-  for (int i = 0; i < all_size; ++i) {
+  for (index i = 0; i < all_size; ++i) {
     auto curr = result_reordered.find(qubit_mapping[i]);
     if(curr != result_reordered.end()) {
       result[i] = (*curr).second;
