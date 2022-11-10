@@ -11,10 +11,10 @@ Amplitudes Hadamard::row(index i) {
   double denominator = std::sqrt(1.0 * this->size());
 
   for (index j = 0; j < this->size(); ++j) {
-    auto selector = i & j;
-    auto selectorBitCount = this->count_set_bits(selector);
+    index selector = i & j;
+    index selectorBitCount = this->count_set_bits(selector);
     bool isNegative = selectorBitCount % 2;
-    row[j] = (isNegative ? -1 : 1) / denominator;
+    row[j] = (isNegative ? -1.0 : 1.0) / denominator;
   }
 
   return row;

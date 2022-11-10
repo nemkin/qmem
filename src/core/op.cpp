@@ -15,7 +15,7 @@ std::string QOp::name() { return this->_name; }
 
 index QOp::qubits() { return this->_qubits; }
 
-index QOp::size() { return 1 << this->_qubits; }
+index QOp::size() { return ((index)1) << this->_qubits; }
 
 index QOp::count_set_bits(index n) {
   index count = 0;
@@ -88,15 +88,15 @@ std::vector<index> QOp::get_bit_mask_mapping(
 }
 
 std::vector<index> QOp::get_qubit_mapping(std::vector<index> bit_mask_mapping) {
-  index n = 1 << bit_mask_mapping.size();
+  index n = ((index)1) << bit_mask_mapping.size();
   std::vector<index> qubit_mapping(n);
 
   for (index i = 0; i < qubit_mapping.size(); ++i) {
     index mapped = 0;
 
     for (index j = 0; j < bit_mask_mapping.size(); ++j) {
-      index frombit = 1 << j;
-      index tobit = 1 << bit_mask_mapping[j];
+      index frombit = ((index)1) << j;
+      index tobit = ((index)1) << bit_mask_mapping[j];
 
       if (i & frombit) {
         mapped += tobit;

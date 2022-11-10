@@ -10,9 +10,9 @@ QRegisters::QRegisters() {
 }
 
 void QRegisters::Add(std::string name, index qubits, index initial) {
-  auto size = 1 << qubits;
+  index size = ((index)1) << qubits;
 
-  auto new_size = this->amplitudes.size();
+  index new_size = this->amplitudes.size();
   std::cout<<"old_size: "<<new_size<<std::endl;
   if (new_size == 0) new_size = 1;
   new_size *= size;
@@ -27,7 +27,7 @@ void QRegisters::Add(std::string name, index qubits, index initial) {
   }
 
   if (this->total_registers == 0) {
-    new_amplitudes[initial] = 1;
+    new_amplitudes[initial] = 1.0;
   }
 
   this->amplitudes.clear();

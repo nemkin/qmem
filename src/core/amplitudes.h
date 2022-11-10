@@ -4,7 +4,7 @@
 #include<complex>
 #include<vector>
 
-typedef unsigned long long index;
+typedef int64_t index;
 typedef std::complex<double> amplitude;
 typedef std::unordered_map<index, amplitude> base;
 

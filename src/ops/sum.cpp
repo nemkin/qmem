@@ -11,8 +11,8 @@ Sum::Sum(std::string name, index input_qubits, index output_qubits) :
   this->input_qubits = input_qubits;
   this->output_qubits = output_qubits;
 
-  this->input_size = 1 << input_qubits;
-  this->output_size = 1 << output_qubits;
+  this->input_size = ((index)1) << input_qubits;
+  this->output_size = ((index)1) << output_qubits;
 }
 
 Amplitudes Sum::row(index i) {

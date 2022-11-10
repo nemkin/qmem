@@ -11,8 +11,8 @@ Mcnot::Mcnot(std::string name, index input_qubits)
   this->input_qubits = input_qubits;
   this->output_qubits = 1;
 
-  this->input_size = 1 << input_qubits;
-  this->output_size = 1 << 1;
+  this->input_size = ((index)1) << input_qubits;
+  this->output_size = 2;
 }
 
 Amplitudes Mcnot::row(index i) {

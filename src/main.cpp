@@ -15,7 +15,7 @@ int main(int argc, char* argv[]) {
   auto regs = QRegisters();
  
   index sum_size = atoi(argv[1]);
-  index size = 1 << (sum_size-1);
+  index size = ((index)1) << (sum_size-((index)1));
   std::cout<<"sum_size: "<<sum_size<<std::endl;
   std::cout<<"size: "<<size<<std::endl;
 
