@@ -3,8 +3,9 @@
 set -e
 
 cd build
-cmake -DCMAKE_BUILD_TYPE=Debug ../src
-make
 
-valgrind --tool=massif --pages-as-heap=yes --massif-out-file=massif.out ./qmem; grep mem_heap_B massif.out | sed -e 's/mem_heap_B=\(.*\)/\1/' | sort -g  | tail -n 1
+for i in 2 3 4 5 6 7 8 10 11; do
+  valgrind -q --tool=massif --pages-as-heap=yes --massif-out-file=massif.out.$i ./qmem $i
+  cat massif.out.$i | grep mem_heap_B | cut -f 2 -d "=" | sort -n | tail -n 1
+done;
 

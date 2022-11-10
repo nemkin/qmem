@@ -6,7 +6,8 @@ Grover::Grover(std::string name, int qubits) : QOp(name, qubits) {
 }
 
 Amplitudes Grover::row(int i) {
-  Amplitudes row(this->size());
+  Amplitudes row;
+  row.resize(this->size());
 
   double denominator = this->size();
 

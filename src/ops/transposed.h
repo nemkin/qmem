@@ -9,6 +9,6 @@ private:
 public:
   Transposed(QOp* other);
 
-  virtual Amplitudes row(int i);
-  virtual Amplitudes col(int j);
+  virtual Amplitudes row(index i);
+  virtual Amplitudes col(index j);
 };

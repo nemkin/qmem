@@ -4,19 +4,20 @@
 #include <bitset>
 
 #include "log.h"
+#include "amplitudes.h"
 
-QOp::QOp(std::string name, int qubits) {
+QOp::QOp(std::string name, index qubits) {
   this->_name = name;
   this->_qubits = qubits;
 }
 
 std::string QOp::name() { return this->_name; }
 
-int QOp::qubits() { return this->_qubits; }
+index QOp::qubits() { return this->_qubits; }
 
-int QOp::size() { return 1 << this->_qubits; }
+index QOp::size() { return 1 << this->_qubits; }
 
-int QOp::count_set_bits(int n) {
+index QOp::count_set_bits(index n) {
   int count = 0;
   while (n) {
     count += n & 1;
@@ -25,12 +26,13 @@ int QOp::count_set_bits(int n) {
   return count;
 }
 
-std::vector<int> QOp::get_bit_mask_mapping(const QRegisters& target, const std::vector<int>& target_regs) {
-  std::vector<int> bit_mask_mapping(target.total_qubits);
+std::vector<index> QOp::get_bit_mask_mapping(
+    const QRegisters& target, const std::vector<index>& target_regs) {
+  std::vector<index> bit_mask_mapping(target.total_qubits);
 
-  int total_qubits = target.total_qubits;
-  int affected_qubits = 0;
-  for (int i = 0; i < target_regs.size(); ++i) {
+  index total_qubits = target.total_qubits;
+  index affected_qubits = 0;
+  for (index i = 0; i < target_regs.size(); ++i) {
     affected_qubits += target.qubits[target_regs[i]];
   }
   //std::cout << "total_qubits: " << total_qubits << std::endl;
@@ -45,7 +47,7 @@ std::vector<int> QOp::get_bit_mask_mapping(const QRegisters& target, const std::
 
   std::vector<bool> is_target_reg(target.total_registers);
   //Log::print(is_target_reg);
-  for (int i = 0; i < target_regs.size(); ++i) {
+  for (index i = 0; i < target_regs.size(); ++i) {
     is_target_reg[target_regs[i]] = true;
   }
 
@@ -56,11 +58,12 @@ std::vector<int> QOp::get_bit_mask_mapping(const QRegisters& target, const std::
   //std::cout << "is_target_reg" << std::endl;
   //Log::print(is_target_reg);
 
-  int current_bit = target.total_qubits - 1;
-  int current_begin_bit = target.total_qubits - 1;
-  int current_end_bit = affected_qubits - 1;
-  for (int i = 0; i < target.total_registers; ++i) {
-    for (int current_offset = 0; current_offset < target.qubits[i]; ++current_offset) {
+  index current_bit = target.total_qubits - 1;
+  index current_begin_bit = target.total_qubits - 1;
+  index current_end_bit = affected_qubits - 1;
+  for (index i = 0; i < target.total_registers; ++i) {
+    for (index current_offset = 0; current_offset < target.qubits[i];
+         ++current_offset) {
       //  std::cout << "curr_bit: " << current_bit << " "
       //  << "curr_beg_bit: " << current_begin_bit << " "
       //  << "curr_end_bit: " << current_end_bit << " "
@@ -84,16 +87,16 @@ std::vector<int> QOp::get_bit_mask_mapping(const QRegisters& target, const std::
   return bit_mask_mapping;
 }
 
-std::vector<int> QOp::get_qubit_mapping(std::vector<int> bit_mask_mapping) {
-  int n = 1 << bit_mask_mapping.size();
-  std::vector<int> qubit_mapping(n);
+std::vector<index> QOp::get_qubit_mapping(std::vector<index> bit_mask_mapping) {
+  index n = 1 << bit_mask_mapping.size();
+  std::vector<index> qubit_mapping(n);
 
-  for (int i = 0; i < qubit_mapping.size(); ++i) {
-    int mapped = 0;
+  for (index i = 0; i < qubit_mapping.size(); ++i) {
+    index mapped = 0;
 
-    for (int j = 0; j < bit_mask_mapping.size(); ++j) {
-      int frombit = 1 << j;
-      int tobit = 1 << bit_mask_mapping[j];
+    for (index j = 0; j < bit_mask_mapping.size(); ++j) {
+      index frombit = 1 << j;
+      index tobit = 1 << bit_mask_mapping[j];
 
       if (i & frombit) {
         mapped += tobit;
@@ -114,40 +117,50 @@ std::vector<int> QOp::get_qubit_mapping(std::vector<int> bit_mask_mapping) {
   return qubit_mapping;
 }
 
-void QOp::apply(QRegisters& target, const std::vector<int>& target_regs) {
-  
+void QOp::apply(QRegisters& target, const std::vector<index>& target_regs) {
   auto bit_mask_mapping = get_bit_mask_mapping(target, target_regs);
   auto qubit_mapping = get_qubit_mapping(bit_mask_mapping);
-  
-  int all_size = target.amplitudes.size();
-  int affected_size = this->size();
-  int upper_size = all_size / affected_size;
 
-  Amplitudes reordered(all_size);
+  index all_size = target.amplitudes.size();
+  index affected_size = this->size();
+  index upper_size = all_size / affected_size;
 
-  for (int i = 0; i < reordered.size(); ++i) {
+  Amplitudes reordered;
+  reordered.resize(all_size);
+
+  for (auto amp : reordered) {
+    index i = amp.first;
     reordered[qubit_mapping[i]] = target.amplitudes[i];
   }
   /*
   Log::print(target.amplitudes);
   Log::print(reordered);*/
   
-  Amplitudes result_reordered(all_size);
+  Amplitudes result_reordered;
+  result_reordered.resize(all_size);
 
-  for (int upper = 0; upper < upper_size; ++upper) {
-    for (int i = 0; i < affected_size; ++i) {
+  for (index upper = 0; upper < upper_size; ++upper) {
+    for (index i = 0; i < affected_size; ++i) {
       auto row = this->row(i);
-      for (int j = 0; j < affected_size; ++j) {
-        result_reordered[upper * affected_size + i] += reordered[upper * affected_size + j] * row[j];
+      for (index j = 0; j < affected_size; ++j) {
+        auto curr = reordered.find(upper * affected_size + j);
+        if(curr != reordered.end()) {
+          result_reordered[upper * affected_size + i] += (*curr).second * row[j];
+        }
       }
     }
   }
 
   //Log::print(result_reordered);
 
-  Amplitudes result(all_size);
+  Amplitudes result;
+  result.resize(all_size);
+  
   for (int i = 0; i < all_size; ++i) {
-    result[i] = result_reordered[qubit_mapping[i]];
+    auto curr = result_reordered.find(qubit_mapping[i]);
+    if(curr != result_reordered.end()) {
+      result[i] = (*curr).second;
+    }
   }
 
   std::cout << "Apply " << this->name() << std::endl;

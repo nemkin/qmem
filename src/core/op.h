@@ -1,31 +1,31 @@
 #pragma once
 
-#include "reg.h"
-
 #include <complex>
 #include <vector>
 
 #include "base.h"
+#include "reg.h"
 
 class QOp {
-private:
-  int _qubits;
+ private:
+  index _qubits;
 
-protected:
+ protected:
   std::string _name;
-  int count_set_bits(int n);
+  index count_set_bits(index n);
 
-public:
-  QOp(std::string name, int qubits);
+ public:
+  QOp(std::string name, index qubits);
   std::string name();
-  int qubits();
-  int size();
+  index qubits();
+  index size();
 
-  virtual Amplitudes row(int i) = 0;
-  virtual Amplitudes col(int j) = 0;
+  virtual Amplitudes row(index i) = 0;
+  virtual Amplitudes col(index j) = 0;
 
-  std::vector<int> get_bit_mask_mapping(const QRegisters& target, const std::vector<int>& target_regs);
-  std::vector<int> get_qubit_mapping(std::vector<int> bit_mask_map);
+  std::vector<index> get_bit_mask_mapping(
+      const QRegisters& target, const std::vector<index>& target_regs);
+  std::vector<index> get_qubit_mapping(std::vector<index> bit_mask_map);
 
-  virtual void apply(QRegisters& target, const std::vector<int>& target_regs);
+  virtual void apply(QRegisters& target, const std::vector<index>& target_regs);
 };

@@ -7,6 +7,7 @@ set(SOURCES
   "core/op.cpp"
   "core/reg.cpp"
   "core/log.cpp"
+  "core/amplitudes.cpp"
   "ops/hadamard.cpp"
   "ops/grover.cpp"
   "ops/sum.cpp"

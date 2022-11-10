@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include "base.h"
+#include "amplitudes.h"
 
 class QRegisters {
 

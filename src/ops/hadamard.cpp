@@ -5,7 +5,8 @@
 Hadamard::Hadamard(std::string name, int qubits) : QOp(name, qubits) {}
 
 Amplitudes Hadamard::row(int i) {
-  Amplitudes row(this->size());
+  Amplitudes row;
+  row.resize(this->size());
 
   double denominator = std::sqrt(1.0 * this->size());
 

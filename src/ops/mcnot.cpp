@@ -6,8 +6,8 @@
 
 #include "../core/log.h"
 
-Mcnot::Mcnot(std::string name, int input_qubits) :
-  QOp(name, input_qubits + output_qubits) {
+Mcnot::Mcnot(std::string name, index input_qubits)
+    : QOp(name, input_qubits + output_qubits) {
   this->input_qubits = input_qubits;
   this->output_qubits = 1;
 
@@ -15,31 +15,33 @@ Mcnot::Mcnot(std::string name, int input_qubits) :
   this->output_size = 1 << 1;
 }
 
-Amplitudes Mcnot::row(int i) {
-  Amplitudes row(this->size());
+Amplitudes Mcnot::row(index i) {
+  Amplitudes row;
+  row.resize(this->size());
 
   row[i] = 1.0;
 
   return row;
 }
 
-Amplitudes Mcnot::col(int i) {
-  Amplitudes row(this->size());
+Amplitudes Mcnot::col(index i) {
+  Amplitudes col;
+  col.resize(this->size());
 
-  row[i] = 1.0;
+  col[i] = 1.0;
 
   //TODO Ancilla bits.
   for (int j = input_size; j < input_size + output_size; ++j) {
-    row[j] = 1.0;
+    col[j] = 1.0;
   }
 
-  return row;
+  return col;
 }
 
-
-void Mcnot::apply(QRegisters& target, const std::vector<int>& input_regs, int output_reg) {
-  int input_reg_size = 1;
-  for (int i = 0; i < input_regs.size(); ++i) {
+void Mcnot::apply(QRegisters& target, const std::vector<index>& input_regs,
+                  index output_reg) {
+  index input_reg_size = 1;
+  for (index i = 0; i < input_regs.size(); ++i) {
     input_reg_size *= target.sizes[input_regs[i]];
   }
   int output_reg_size = target.sizes[output_reg];
@@ -48,7 +50,7 @@ void Mcnot::apply(QRegisters& target, const std::vector<int>& input_regs, int ou
   assert(input_reg_size == this->input_size);
   assert(output_reg_size == this->output_size);
 
-  std::vector<int> target_regs;
+  std::vector<index> target_regs;
 
   target_regs.insert(
     target_regs.end(),
@@ -64,25 +66,27 @@ void Mcnot::apply(QRegisters& target, const std::vector<int>& input_regs, int ou
   this->apply(target, target_regs);
 }
 
-void Mcnot::apply(QRegisters& target, const std::vector<int>& target_regs) {
+void Mcnot::apply(QRegisters& target, const std::vector<index>& target_regs) {
 
   // Target regs are: input, then output
 
   auto bit_mask_mapping = get_bit_mask_mapping(target, target_regs);
   auto qubit_mapping = get_qubit_mapping(bit_mask_mapping);
 
-  int input_size = this->input_size;
-  int output_size = this->output_size;
+  index input_size = this->input_size;
+  index output_size = this->output_size;
 
-  int all_size = target.amplitudes.size();
-  int affected_size = this->size();
-  int upper_size = all_size / affected_size;
+  index all_size = target.amplitudes.size();
+  index affected_size = this->size();
+  index upper_size = all_size / affected_size;
 
   assert(upper_size == 2);
 
-  Amplitudes reordered(all_size);
+  Amplitudes reordered;
+  reordered.resize(all_size);
 
-  for (int i = 0; i < reordered.size(); ++i) {
+  for (auto amp : target.amplitudes) {
+    index i = amp.first;
     reordered[qubit_mapping[i]] = target.amplitudes[i];
   }
 
@@ -92,16 +96,21 @@ void Mcnot::apply(QRegisters& target, const std::vector<int>& target_regs) {
   std::cout << "Reordered initial of " << this->name() << std::endl;
   Log::qubit_print(reordered, target.total_qubits);
 
-  Amplitudes result_reordered(all_size);
+  Amplitudes result_reordered;
+  result_reordered.resize(all_size);
 
-  for (int upper = 0; upper < upper_size; ++upper) {
-    for (int j = 0; j < input_size; ++j) {
-      int count = this->count_set_bits(j);
+  for (index upper = 0; upper < upper_size; ++upper) {
+    for (index j = 0; j < input_size; ++j) {
+      auto curr = reordered.find(upper * affected_size + j);
+      if(curr == reordered.end()) {
+        continue;
+      }
+      index count = this->count_set_bits(j);
       if (count != 0) {
-        result_reordered[(1-upper) * affected_size + j] = reordered[upper * affected_size + j];
+        result_reordered[(1-upper) * affected_size + j] = (*curr).second;
       }
       else {
-        result_reordered[upper * affected_size + j] = reordered[upper * affected_size + j];
+        result_reordered[upper * affected_size + j] = (*curr).second;
       }
     }
   }
@@ -111,9 +120,14 @@ void Mcnot::apply(QRegisters& target, const std::vector<int>& target_regs) {
   std::cout << "Reordered result of " << this->name() << std::endl;
   Log::qubit_print(result_reordered, target.total_qubits);
 
-  Amplitudes result(all_size);
-  for (int i = 0; i < all_size; ++i) {
-    result[i] = result_reordered[qubit_mapping[i]];
+  Amplitudes result;
+  result.resize(all_size);
+  for (index i = 0; i < all_size; ++i) {
+    auto curr = result_reordered.find(qubit_mapping[i]);
+    if(curr == result_reordered.end()) {
+      continue;
+    }
+    result[i] = (*curr).second;
   }
 
   std::cout << "Apply " << this->name() << std::endl;

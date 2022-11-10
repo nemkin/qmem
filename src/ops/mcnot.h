@@ -5,18 +5,19 @@
 class Mcnot : public QOp {
 
 private:
-  int input_qubits;
-  int output_qubits;
+ index input_qubits;
+ index output_qubits;
 
-  int input_size;
-  int output_size;
+ index input_size;
+ index output_size;
 
 public:
-  Mcnot(std::string name, int input_qubits);
+ Mcnot(std::string name, index input_qubits);
 
-  virtual Amplitudes row(int i);
-  virtual Amplitudes col(int j);
+ virtual Amplitudes row(index i);
+ virtual Amplitudes col(index j);
 
-  virtual void apply(QRegisters& target, const std::vector<int>& target_regs);
-  virtual void apply(QRegisters& target, const std::vector<int>& input_regs, int output_reg);
+ virtual void apply(QRegisters& target, const std::vector<index>& target_regs);
+ virtual void apply(QRegisters& target, const std::vector<index>& input_regs,
+                    index output_reg);
 };

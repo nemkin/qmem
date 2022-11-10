@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-
+#include "amplitudes.h"
 
 QRegisters::QRegisters() {
 
@@ -13,12 +13,16 @@ void QRegisters::Add(std::string name, int qubits, int initial) {
   auto size = 1 << qubits;
 
   auto new_size = this->amplitudes.size();
+  std::cout<<"old_size: "<<new_size<<std::endl;
   if (new_size == 0) new_size = 1;
   new_size *= size;
+  std::cout<<"new_size: "<<new_size<<std::endl;
 
-  std::vector<std::complex<double>> new_amplitudes(new_size);
+  Amplitudes new_amplitudes;
+  new_amplitudes.resize(new_size);
 
-  for (int j = 0; j < this->amplitudes.size(); ++j) {
+  for (auto amp : this->amplitudes) {
+    auto j = amp.first;
     new_amplitudes[initial * this->total_size + j] = amplitudes[j];
   }
 
