@@ -6,10 +6,10 @@
 #include "amplitudes.h"
 
 QRegisters::QRegisters() {
-
+  amplitudes.resize(0);
 }
 
-void QRegisters::Add(std::string name, int qubits, int initial) {
+void QRegisters::Add(std::string name, index qubits, index initial) {
   auto size = 1 << qubits;
 
   auto new_size = this->amplitudes.size();
@@ -27,7 +27,7 @@ void QRegisters::Add(std::string name, int qubits, int initial) {
   }
 
   if (this->total_registers == 0) {
-    new_amplitudes[0] = 1;
+    new_amplitudes[initial] = 1;
   }
 
   this->amplitudes.clear();

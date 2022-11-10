@@ -108,9 +108,8 @@ void Sum::apply(QRegisters& target, const std::vector<index>& target_regs) {
       }
 
       int count = this->count_set_bits(j);
-      if (reordered[upper * affected_size + j] != 0.0) { // TODO always true
-        std::cout << count << " ";
-      }
+      std::cout << "count: " << count << std::endl;
+      
       //result_reordered[upper * affected_size + j] = reordered[upper * affected_size + j];
       
       result_reordered[upper * affected_size + count * input_size + j] += (*curr).second;

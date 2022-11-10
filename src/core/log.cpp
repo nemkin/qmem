@@ -139,6 +139,7 @@ void Log::print(Amplitudes vals) {
 }
 
 void Log::qubit_print(Amplitudes vals, index max_size) {
+  std::cout << "qubits BEGIN ==== " << std::endl;
   for (auto amp : vals) {
     index i = amp.first;
     if (vals[i] == 0.0) { //TODO delete?
@@ -149,7 +150,7 @@ void Log::qubit_print(Amplitudes vals, index max_size) {
     reverse(remaining.begin(), remaining.end());
     std::cout << "|" << remaining << ">: " << Log::to_string(vals[i]) << std::endl;
   }
-  std::cout << std::endl;
+  std::cout << "qubits END ==== " << std::endl;
 }
 
 void Log::print(QOp* op) {
