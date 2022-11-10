@@ -25,7 +25,7 @@ class QOp {
 
   std::vector<index> get_bit_mask_mapping(
       const QRegisters& target, const std::vector<index>& target_regs);
-  std::vector<index> get_qubit_mapping(std::vector<index> bit_mask_map);
+  index get_qubit_mapping(const std::vector<index>& bit_mask_map, index i);
 
   virtual void apply(QRegisters& target, const std::vector<index>& target_regs);
 };

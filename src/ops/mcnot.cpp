@@ -67,11 +67,8 @@ void Mcnot::apply(QRegisters& target, const std::vector<index>& input_regs,
 }
 
 void Mcnot::apply(QRegisters& target, const std::vector<index>& target_regs) {
-
   // Target regs are: input, then output
-
   auto bit_mask_mapping = get_bit_mask_mapping(target, target_regs);
-  auto qubit_mapping = get_qubit_mapping(bit_mask_mapping);
 
   index input_size = this->input_size;
   index output_size = this->output_size;
@@ -87,7 +84,8 @@ void Mcnot::apply(QRegisters& target, const std::vector<index>& target_regs) {
 
   for (auto amp : target.amplitudes) {
     index i = amp.first;
-    reordered[qubit_mapping[i]] = target.amplitudes[i];
+    index mapped = get_qubit_mapping(bit_mask_mapping, i);
+    reordered[mapped] = target.amplitudes[i];
   }
 
   std::cout << "Initial of " << this->name() << std::endl;
@@ -143,7 +141,8 @@ void Mcnot::apply(QRegisters& target, const std::vector<index>& target_regs) {
   Amplitudes result;
   result.resize(all_size);
   for (index i = 0; i < all_size; ++i) {
-    auto curr = result_reordered.find(qubit_mapping[i]);
+    index mapped = get_qubit_mapping(bit_mask_mapping, i);
+    auto curr = result_reordered.find(mapped);
     if(curr == result_reordered.end()) {
       continue;
     }
