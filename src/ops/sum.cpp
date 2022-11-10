@@ -70,7 +70,7 @@ void Sum::apply(QRegisters& target, const std::vector<index>& input_regs, const 
 }
 
 void Sum::apply(QRegisters& target, const std::vector<index>& target_regs) {
-  std::cout << "SUM BEGIN ============================================"  << std::endl;
+  std::cout << "SUM BEGIN ====="  << std::endl;
   // Target regs are: input, then output
 
   auto bit_mask_mapping = get_bit_mask_mapping(target, target_regs);
@@ -95,11 +95,11 @@ void Sum::apply(QRegisters& target, const std::vector<index>& target_regs) {
     reordered[qubit_mapping[i]] = target.amplitudes[i];
   }
 
-  std::cout << "Initial of " << this->name() << std::endl;
-  Log::qubit_print(target.amplitudes, target.total_qubits);
+  // std::cout << "Initial of " << this->name() << std::endl;
+  // Log::qubit_print(target.amplitudes, target.total_qubits);
 
-  std::cout << "Reordered initial of " << this->name() << std::endl;
-  Log::qubit_print(reordered, target.total_qubits);
+  // std::cout << "Reordered initial of " << this->name() << std::endl;
+  // Log::qubit_print(reordered, target.total_qubits);
 
   Amplitudes reordered_cleaned;
   reordered_cleaned.resize(all_size);
@@ -118,14 +118,14 @@ void Sum::apply(QRegisters& target, const std::vector<index>& target_regs) {
     reordered_cleaned[target] = amp.second;
   }
 
-  std::cout << "Reordered cleaned initial of " << this->name() << std::endl;
-  Log::qubit_print(reordered_cleaned, target.total_qubits);
+  // std::cout << "Reordered cleaned initial of " << this->name() << std::endl;
+  // Log::qubit_print(reordered_cleaned, target.total_qubits);
   
   Amplitudes result_reordered;
   result_reordered.resize(all_size);
 
   for (index upper = 0; upper < upper_size; ++upper) {
-    std::cout << "upper: " << upper << std::endl;
+    // std::cout << "upper: " << upper << std::endl;
     for (index j = 0; j < input_size; ++j) {
       auto curr = reordered_cleaned.find(upper * affected_size + j);
 
@@ -144,8 +144,8 @@ void Sum::apply(QRegisters& target, const std::vector<index>& target_regs) {
 
   //std::cout << std::endl;
 
-  std::cout << "Reordered result of " << this->name() << std::endl;
-  Log::qubit_print(result_reordered, target.total_qubits);
+  // std::cout << "Reordered result of " << this->name() << std::endl;
+  // Log::qubit_print(result_reordered, target.total_qubits);
 
   Amplitudes result;
   result.resize(all_size);
@@ -162,5 +162,5 @@ void Sum::apply(QRegisters& target, const std::vector<index>& target_regs) {
   Log::qubit_print(result, target.total_qubits);
 
   target.amplitudes = result;
-  std::cout << "SUM END ============================================"  << std::endl;
+  std::cout << "SUM END ====="  << std::endl;
 }
