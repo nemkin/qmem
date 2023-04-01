@@ -13,6 +13,10 @@ set(SOURCES
   "ops/sum.cpp"
   "ops/mcnot.cpp"
   "ops/transposed.cpp"
+  "ops/shift.cpp"
+  "ops/single.cpp"
+  "ops/tensored.cpp"
+  "ops/added.cpp"
 )
 
 add_executable (qmem ${SOURCES})
