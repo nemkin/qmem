@@ -25,8 +25,7 @@ Amplitudes Sum::row(index i) {
 }
 
 Amplitudes Sum::col(index i) {
-  Amplitudes col;
-  col.resize(this->size());
+  Amplitudes col(this->size());
 
   col[i] = 1.0;
 
